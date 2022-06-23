@@ -1,11 +1,6 @@
-import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:uuid/uuid.dart';
 
 // ignore: must_be_immutable
 class ChatRoom extends StatelessWidget {
@@ -18,62 +13,62 @@ class ChatRoom extends StatelessWidget {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  File? imageFile;
+  // File? imageFile;
 
-  Future getImage() async {
-    ImagePicker _picker = ImagePicker();
+  // Future getImage() async {
+  //   ImagePicker _picker = ImagePicker();
 
-    await _picker.pickImage(source: ImageSource.gallery).then((xFile) {
-      if (xFile != null) {
-        imageFile = File(xFile.path);
-        uploadImage();
-      }
-    });
-  }
+  //   await _picker.pickImage(source: ImageSource.gallery).then((xFile) {
+  //     if (xFile != null) {
+  //       imageFile = File(xFile.path);
+  //       uploadImage();
+  //     }
+  //   });
+  // }
 
-  Future uploadImage() async {
-    String fileName = Uuid().v1();
-    int status = 1;
+  // Future uploadImage() async {
+  //   String fileName = Uuid().v1();
+  //   int status = 1;
 
-    await _firestore
-        .collection('chatroom')
-        .doc(chatRoomId)
-        .collection('chats')
-        .doc(fileName)
-        .set({
-      "sendby": _auth.currentUser!.displayName,
-      "message": "",
-      "type": "img",
-      "time": FieldValue.serverTimestamp(),
-    });
+  //   await _firestore
+  //       .collection('chatroom')
+  //       .doc(chatRoomId)
+  //       .collection('chats')
+  //       .doc(fileName)
+  //       .set({
+  //     "sendby": _auth.currentUser!.displayName,
+  //     "message": "",
+  //     "type": "img",
+  //     "time": FieldValue.serverTimestamp(),
+  //   });
 
-    var ref =
-        FirebaseStorage.instance.ref().child('images').child("$fileName.jpg");
+  //   var ref =
+  //       FirebaseStorage.instance.ref().child('images').child("$fileName.jpg");
 
-    var uploadTask = await ref.putFile(imageFile!).catchError((error) async {
-      await _firestore
-          .collection('chatroom')
-          .doc(chatRoomId)
-          .collection('chats')
-          .doc(fileName)
-          .delete();
+  //   var uploadTask = await ref.putFile(imageFile!).catchError((error) async {
+  //     await _firestore
+  //         .collection('chatroom')
+  //         .doc(chatRoomId)
+  //         .collection('chats')
+  //         .doc(fileName)
+  //         .delete();
 
-      status = 0;
-    });
+  //     status = 0;
+  //   });
 
-    if (status == 1) {
-      String imageUrl = await uploadTask.ref.getDownloadURL();
+  //   if (status == 1) {
+  //     String imageUrl = await uploadTask.ref.getDownloadURL();
 
-      await _firestore
-          .collection('chatroom')
-          .doc(chatRoomId)
-          .collection('chats')
-          .doc(fileName)
-          .update({"message": imageUrl});
+  //     await _firestore
+  //         .collection('chatroom')
+  //         .doc(chatRoomId)
+  //         .collection('chats')
+  //         .doc(fileName)
+  //         .update({"message": imageUrl});
 
-      print(imageUrl);
-    }
-  }
+  //     print(imageUrl);
+  //   }
+  // }
 
   void onSendMessage() async {
     if (_message.text.isNotEmpty) {
@@ -101,6 +96,7 @@ class ChatRoom extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color(0xFF4786B9),
         title: StreamBuilder<DocumentSnapshot>(
           stream:
               _firestore.collection("users").doc(userMap['uid']).snapshots(),
@@ -110,10 +106,6 @@ class ChatRoom extends StatelessWidget {
                 child: Column(
                   children: [
                     Text(userMap['name'].toString()),
-                    // Text(
-                    //   snapshot.data!['status'],
-                    //   style: TextStyle(fontSize: 14),
-                    // ),
                   ],
                 ),
               );
@@ -127,6 +119,7 @@ class ChatRoom extends StatelessWidget {
         child: Column(
           children: [
             Container(
+              color: Color.fromARGB(255, 240, 239, 239),
               height: size.height / 1.25,
               width: size.width,
               child: StreamBuilder<QuerySnapshot>(
@@ -169,18 +162,23 @@ class ChatRoom extends StatelessWidget {
                       child: TextField(
                         controller: _message,
                         decoration: InputDecoration(
-                            suffixIcon: IconButton(
-                              onPressed: () => getImage(),
-                              icon: Icon(Icons.photo),
-                            ),
-                            hintText: "Send Message",
+                            // suffixIcon: IconButton(
+                            //   onPressed: () => getImage(),
+                            //   icon: Icon(Icons.photo),
+                            // ),
+                            hintText: "Envie uma mensagem...",
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8),
                             )),
                       ),
                     ),
                     IconButton(
-                        icon: Icon(Icons.send), onPressed: onSendMessage),
+                        icon: Icon(
+                          Icons.send,
+                          color: Colors.blue,
+                          size: 30,
+                        ),
+                        onPressed: onSendMessage),
                   ],
                 ),
               ),
@@ -200,17 +198,31 @@ class ChatRoom extends StatelessWidget {
                 : Alignment.centerLeft,
             child: Container(
               padding: EdgeInsets.symmetric(vertical: 10, horizontal: 14),
-              margin: EdgeInsets.symmetric(vertical: 5, horizontal: 8),
+              margin: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-                color: Colors.blue,
+                borderRadius: map['sendby'] == _auth.currentUser!.displayName
+                    ? BorderRadius.only(
+                        bottomLeft: Radius.circular(12),
+                        topLeft: Radius.circular(12),
+                        topRight: Radius.circular(12),
+                      )
+                    : BorderRadius.only(
+                        bottomRight: Radius.circular(12),
+                        topRight: Radius.circular(12),
+                        topLeft: Radius.circular(12),
+                      ),
+                color: map['sendby'] == _auth.currentUser!.displayName
+                    ? Color(0xFF4786B9)
+                    : Color(0xFFD4D3D3),
               ),
               child: Text(
                 map['message'],
                 style: TextStyle(
                   fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.white,
+                  fontWeight: FontWeight.w400,
+                  color: map['sendby'] == _auth.currentUser!.displayName
+                      ? Colors.white
+                      : Colors.black,
                 ),
               ),
             ),
