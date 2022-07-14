@@ -1,5 +1,6 @@
 import 'package:chat_app/Groups/create_group/add_members.dart';
 import 'package:chat_app/Groups/group_chat_room.dart';
+import 'package:chat_app/variables/text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -46,7 +47,7 @@ class _GroupChatHomeScreenState extends State<GroupChatHomeScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Groups"),
+        title: Text(MyText.groups),
       ),
       body: isLoading
           ? Container(
@@ -79,7 +80,7 @@ class _GroupChatHomeScreenState extends State<GroupChatHomeScreen> {
             builder: (_) => AddMembersInGroup(),
           ),
         ),
-        tooltip: "Create Group",
+        tooltip: MyText.createGroup,
       ),
     );
   }

@@ -1,5 +1,6 @@
 import 'package:chat_app/Groups/add_members.dart';
 import 'package:chat_app/Screens/home_screen.dart';
+import 'package:chat_app/variables/text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -79,15 +80,16 @@ class _GroupInfoState extends State<GroupInfo> {
     if (checkAdmin()) {
       if (_auth.currentUser!.uid != membersList[index]['uid']) {
         showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                content: ListTile(
-                  onTap: () => removeMembers(index),
-                  title: Text("Remove This Member"),
-                ),
-              );
-            });
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              content: ListTile(
+                onTap: () => removeMembers(index),
+                title: Text(MyText.removeMember),
+              ),
+            );
+          },
+        );
       }
     }
   }
@@ -179,13 +181,7 @@ class _GroupInfoState extends State<GroupInfo> {
                         ],
                       ),
                     ),
-
-                    //
-
-                    SizedBox(
-                      height: size.height / 20,
-                    ),
-
+                    SizedBox(height: size.height / 20),
                     Container(
                       width: size.width / 1.1,
                       child: Text(
@@ -196,13 +192,9 @@ class _GroupInfoState extends State<GroupInfo> {
                         ),
                       ),
                     ),
-
                     SizedBox(
                       height: size.height / 20,
                     ),
-
-                    // Members Name
-
                     checkAdmin()
                         ? ListTile(
                             onTap: () => Navigator.of(context).push(
@@ -218,7 +210,7 @@ class _GroupInfoState extends State<GroupInfo> {
                               Icons.add,
                             ),
                             title: Text(
-                              "Add Members",
+                              MyText.addMember,
                               style: TextStyle(
                                 fontSize: size.width / 22,
                                 fontWeight: FontWeight.w500,
@@ -226,7 +218,6 @@ class _GroupInfoState extends State<GroupInfo> {
                             ),
                           )
                         : SizedBox(),
-
                     Flexible(
                       child: ListView.builder(
                         itemCount: membersList.length,
@@ -250,7 +241,6 @@ class _GroupInfoState extends State<GroupInfo> {
                         },
                       ),
                     ),
-
                     ListTile(
                       onTap: onLeaveGroup,
                       leading: Icon(
@@ -258,7 +248,7 @@ class _GroupInfoState extends State<GroupInfo> {
                         color: Colors.redAccent,
                       ),
                       title: Text(
-                        "Leave Group",
+                        MyText.leaveGroup,
                         style: TextStyle(
                           fontSize: size.width / 22,
                           fontWeight: FontWeight.w500,

@@ -1,4 +1,5 @@
 import 'package:chat_app/Screens/home_screen.dart';
+import 'package:chat_app/variables/text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -60,7 +61,7 @@ class _CreateGroupState extends State<CreateGroup> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Group Name"),
+        title: Text(MyText.nameGruop),
       ),
       body: isLoading
           ? Container(
@@ -84,7 +85,7 @@ class _CreateGroupState extends State<CreateGroup> {
                     child: TextField(
                       controller: _groupName,
                       decoration: InputDecoration(
-                        hintText: "Enter Group Name",
+                        hintText: MyText.enterGroupName,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
@@ -97,13 +98,10 @@ class _CreateGroupState extends State<CreateGroup> {
                 ),
                 ElevatedButton(
                   onPressed: createGroup,
-                  child: Text("Create Group"),
+                  child: Text(MyText.createGroup),
                 ),
               ],
             ),
     );
   }
 }
-
-
-//

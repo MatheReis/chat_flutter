@@ -1,8 +1,9 @@
+import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:crypto/crypto.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-// ignore: must_be_immutable
 class ChatRoom extends StatelessWidget {
   final Map<String, dynamic> userMap;
   final String chatRoomId;
@@ -13,68 +14,16 @@ class ChatRoom extends StatelessWidget {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  // File? imageFile;
-
-  // Future getImage() async {
-  //   ImagePicker _picker = ImagePicker();
-
-  //   await _picker.pickImage(source: ImageSource.gallery).then((xFile) {
-  //     if (xFile != null) {
-  //       imageFile = File(xFile.path);
-  //       uploadImage();
-  //     }
-  //   });
-  // }
-
-  // Future uploadImage() async {
-  //   String fileName = Uuid().v1();
-  //   int status = 1;
-
-  //   await _firestore
-  //       .collection('chatroom')
-  //       .doc(chatRoomId)
-  //       .collection('chats')
-  //       .doc(fileName)
-  //       .set({
-  //     "sendby": _auth.currentUser!.displayName,
-  //     "message": "",
-  //     "type": "img",
-  //     "time": FieldValue.serverTimestamp(),
-  //   });
-
-  //   var ref =
-  //       FirebaseStorage.instance.ref().child('images').child("$fileName.jpg");
-
-  //   var uploadTask = await ref.putFile(imageFile!).catchError((error) async {
-  //     await _firestore
-  //         .collection('chatroom')
-  //         .doc(chatRoomId)
-  //         .collection('chats')
-  //         .doc(fileName)
-  //         .delete();
-
-  //     status = 0;
-  //   });
-
-  //   if (status == 1) {
-  //     String imageUrl = await uploadTask.ref.getDownloadURL();
-
-  //     await _firestore
-  //         .collection('chatroom')
-  //         .doc(chatRoomId)
-  //         .collection('chats')
-  //         .doc(fileName)
-  //         .update({"message": imageUrl});
-
-  //     print(imageUrl);
-  //   }
-  // }
-
   void onSendMessage() async {
+    var bytes = utf8.encode(_message.text);
+    var sha = sha1.convert(bytes);
+    // decrypt message
+    var decrypted = utf8.decode(sha.bytes);
+
     if (_message.text.isNotEmpty) {
       Map<String, dynamic> messages = {
         "sendby": _auth.currentUser!.displayName,
-        "message": _message.text,
+        "message": _message.text.trim(),
         "type": "text",
         "time": FieldValue.serverTimestamp(),
       };
@@ -85,8 +34,6 @@ class ChatRoom extends StatelessWidget {
           .doc(chatRoomId)
           .collection('chats')
           .add(messages);
-    } else {
-      print("Enter Some Text");
     }
   }
 
@@ -162,23 +109,24 @@ class ChatRoom extends StatelessWidget {
                       child: TextField(
                         controller: _message,
                         decoration: InputDecoration(
-                            // suffixIcon: IconButton(
-                            //   onPressed: () => getImage(),
-                            //   icon: Icon(Icons.photo),
-                            // ),
-                            hintText: "Envie uma mensagem...",
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            )),
+                          hintText: "Envie uma mensagem...",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
                       ),
                     ),
-                    IconButton(
-                        icon: Icon(
+                    InkWell(
+                      child: CircleAvatar(
+                        child: Icon(
                           Icons.send,
-                          color: Colors.blue,
-                          size: 30,
                         ),
-                        onPressed: onSendMessage),
+                      ),
+                      onTap: () {
+                        onSendMessage();
+                        print(onSendMessage);
+                      },
+                    ),
                   ],
                 ),
               ),
@@ -278,5 +226,3 @@ class ShowImage extends StatelessWidget {
     );
   }
 }
-
-//

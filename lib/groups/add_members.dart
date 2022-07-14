@@ -1,3 +1,4 @@
+import 'package:chat_app/variables/text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -67,7 +68,7 @@ class _AddMemberInGroupState extends State<AddMemberInGroup> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Add Members"),
+        title: Text(MyText.addMember),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -86,7 +87,7 @@ class _AddMemberInGroupState extends State<AddMemberInGroup> {
                 child: TextField(
                   controller: _search,
                   decoration: InputDecoration(
-                    hintText: "Search",
+                    hintText: MyText.search,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
@@ -106,7 +107,7 @@ class _AddMemberInGroupState extends State<AddMemberInGroup> {
                   )
                 : ElevatedButton(
                     onPressed: onSearch,
-                    child: Text("Search"),
+                    child: Text(MyText.search),
                   ),
             userMap != null
                 ? ListTile(
