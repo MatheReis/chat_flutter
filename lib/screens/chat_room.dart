@@ -175,11 +175,14 @@ class ChatRoom extends StatelessWidget {
                   SizedBox(
                     height: 5,
                   ),
+                  // hour and minute
                   Text(
-                    DateTime.fromMillisecondsSinceEpoch(
-                            map['time'].seconds * 1000)
-                        .toString()
-                        .substring(11, 16),
+                    map['time'] != null
+                        ? DateTime.fromMillisecondsSinceEpoch(
+                                map['time'].millisecondsSinceEpoch)
+                            .toString()
+                            .substring(11, 16)
+                        : "",
                     style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w400,
