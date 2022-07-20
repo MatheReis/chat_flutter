@@ -15,7 +15,6 @@ class _ContactScreenState extends State<ContactScreen> {
   TextEditingController controller = TextEditingController();
   List<UserDetails> _searchResult = [];
   List<UserDetails> _userDetails = [];
-  final String url = 'https://jsonplaceholder.typicode.com/users';
 
   onSearchTextChanged(String text) async {
     _searchResult.clear();
@@ -33,7 +32,7 @@ class _ContactScreenState extends State<ContactScreen> {
   }
 
   Future getUserDetails() async {
-    final response = await http.get(Uri.parse(url));
+    final response = await http.get(Uri.parse(''));
     final responseJson = json.decode(response.body);
 
     setState(() {

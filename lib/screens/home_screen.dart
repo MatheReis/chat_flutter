@@ -126,7 +126,11 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
             builder:
                 (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
               if (snapshot.hasError) {
-                return Text(MyText.error);
+                return Center(
+                  child: Text(
+                    MyText.error,
+                  ),
+                );
               }
 
               if (snapshot.connectionState == ConnectionState.waiting) {

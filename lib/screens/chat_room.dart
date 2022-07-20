@@ -1,8 +1,6 @@
-import 'dart:convert';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:crypto/crypto.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ChatRoom extends StatelessWidget {
   final Map<String, dynamic> userMap;
@@ -15,11 +13,6 @@ class ChatRoom extends StatelessWidget {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   void onSendMessage() async {
-    var bytes = utf8.encode(_message.text);
-    var sha = sha1.convert(bytes);
-    // decrypt message
-    var decrypted = utf8.decode(sha.bytes);
-
     if (_message.text.isNotEmpty) {
       Map<String, dynamic> messages = {
         "sendby": _auth.currentUser!.displayName,
@@ -124,7 +117,7 @@ class ChatRoom extends StatelessWidget {
                       ),
                       onTap: () {
                         onSendMessage();
-                        print(onSendMessage);
+                        print(_message.text.trim());
                       },
                     ),
                   ],
@@ -150,28 +143,52 @@ class ChatRoom extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: map['sendby'] == _auth.currentUser!.displayName
                     ? BorderRadius.only(
-                        bottomLeft: Radius.circular(12),
-                        topLeft: Radius.circular(12),
-                        topRight: Radius.circular(12),
+                        bottomLeft: Radius.circular(10),
+                        topLeft: Radius.circular(10),
+                        topRight: Radius.circular(10),
                       )
                     : BorderRadius.only(
-                        bottomRight: Radius.circular(12),
-                        topRight: Radius.circular(12),
-                        topLeft: Radius.circular(12),
+                        bottomRight: Radius.circular(10),
+                        topRight: Radius.circular(10),
+                        topLeft: Radius.circular(10),
                       ),
                 color: map['sendby'] == _auth.currentUser!.displayName
                     ? Color(0xFF4786B9)
                     : Color(0xFFD4D3D3),
               ),
-              child: Text(
-                map['message'],
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400,
-                  color: map['sendby'] == _auth.currentUser!.displayName
-                      ? Colors.white
-                      : Colors.black,
-                ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Container(
+                    child: Text(
+                      map['message'],
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                        color: map['sendby'] == _auth.currentUser!.displayName
+                            ? Colors.white
+                            : Colors.black,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Text(
+                    DateTime.fromMillisecondsSinceEpoch(
+                            map['time'].seconds * 1000)
+                        .toString()
+                        .substring(11, 16),
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w400,
+                      color: map['sendby'] == _auth.currentUser!.displayName
+                          ? Colors.white
+                          : Colors.black,
+                    ),
+                  ),
+                ],
               ),
             ),
           )
