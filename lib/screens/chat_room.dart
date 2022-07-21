@@ -87,6 +87,7 @@ class ChatRoom extends StatelessWidget {
               ),
             ),
             Container(
+              color: Color.fromARGB(255, 240, 239, 239),
               height: size.height / 10,
               width: size.width,
               alignment: Alignment.center,
@@ -98,21 +99,30 @@ class ChatRoom extends StatelessWidget {
                   children: [
                     Container(
                       height: size.height / 17,
-                      width: size.width / 1.3,
+                      width: size.width / 1.4,
                       child: TextField(
+                        cursorColor: Color(0xFF4786B9),
                         controller: _message,
                         decoration: InputDecoration(
-                          hintText: "Envie uma mensagem...",
+                          fillColor: Colors.grey.shade200,
+                          hintText: "Mensagem",
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
+                            borderRadius: BorderRadius.circular(15),
+                            borderSide: BorderSide(
+                              color: Colors.grey.shade100,
+                            ),
                           ),
                         ),
                       ),
                     ),
+                    SizedBox(width: 15),
                     InkWell(
                       child: CircleAvatar(
+                        radius: 25,
+                        backgroundColor: Color(0xFF4786B9),
                         child: Icon(
                           Icons.send,
+                          color: Colors.white,
                         ),
                       ),
                       onTap: () {
@@ -202,47 +212,6 @@ class ChatRoom extends StatelessWidget {
             alignment: map['sendby'] == _auth.currentUser!.displayName
                 ? Alignment.centerRight
                 : Alignment.centerLeft,
-            child: InkWell(
-              onTap: () => Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (_) => ShowImage(
-                    imageUrl: map['message'],
-                  ),
-                ),
-              ),
-              child: Container(
-                height: size.height / 2.5,
-                width: size.width / 2,
-                decoration: BoxDecoration(border: Border.all()),
-                alignment: map['message'] != "" ? null : Alignment.center,
-                child: map['message'] != ""
-                    ? Image.network(
-                        map['message'],
-                        fit: BoxFit.cover,
-                      )
-                    : CircularProgressIndicator(),
-              ),
-            ),
           );
-  }
-}
-
-class ShowImage extends StatelessWidget {
-  final String imageUrl;
-
-  const ShowImage({required this.imageUrl, Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
-
-    return Scaffold(
-      body: Container(
-        height: size.height,
-        width: size.width,
-        color: Colors.black,
-        child: Image.network(imageUrl),
-      ),
-    );
   }
 }
