@@ -1,5 +1,6 @@
-import 'package:chat_app/Auth/auth.dart';
-import 'package:chat_app/Screens/home_screen.dart';
+import 'package:chat_app/auth/Methods.dart';
+import 'package:chat_app/auth/create_account.dart';
+import 'package:chat_app/screens/screens.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -142,8 +143,8 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget field(
-      Size size, String hintText, IconData icon, TextEditingController controller) {
+  Widget field(Size size, String hintText, IconData icon,
+      TextEditingController controller) {
     return Container(
       height: size.height / 14,
       width: size.width / 1.1,

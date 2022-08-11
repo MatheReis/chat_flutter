@@ -1,5 +1,5 @@
-import 'package:chat_app/Groups/create_group/add_members.dart';
-import 'package:chat_app/Groups/group_chat_room.dart';
+import 'package:chat_app/groups/create_group/add_members.dart';
+import 'package:chat_app/groups/groups.dart';
 import 'package:chat_app/variables/text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';

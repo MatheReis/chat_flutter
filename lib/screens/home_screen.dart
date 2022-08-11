@@ -1,6 +1,5 @@
-import 'package:chat_app/Groups/group_chat_screen.dart';
-import 'package:chat_app/Screens/chat_room.dart';
 import 'package:chat_app/auth/Methods.dart';
+import 'package:chat_app/screens/chat_room.dart';
 import 'package:chat_app/variables/text.dart';
 import 'package:chat_app/widgets/app_bar_home.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -83,11 +82,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
       body: buildBody(),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.group),
-        onPressed: () => Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (_) => GroupChatHomeScreen(),
-          ),
-        ),
+        onPressed: () {},
       ),
     );
   }

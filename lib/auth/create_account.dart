@@ -1,7 +1,7 @@
-import 'package:chat_app/Auth/auth.dart';
+import 'package:chat_app/auth/Methods.dart';
+import 'package:chat_app/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
-import '../Screens/home_screen.dart';
 
 class CreateAccount extends StatefulWidget {
   @override

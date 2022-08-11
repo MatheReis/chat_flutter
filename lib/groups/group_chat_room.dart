@@ -1,4 +1,4 @@
-import 'package:chat_app/Groups/group_info.dart';
+import 'package:chat_app/groups/groups.dart';
 import 'package:chat_app/variables/colors.dart';
 import 'package:chat_app/variables/text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
